@@ -1,0 +1,79 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- <link rel="stylesheet" href="Index.css" /> -->
+        <title>Ecommerce</title>
+    </head>
+
+    <table id="users"></table>
+    <body>
+</html>
+
+<script>
+const  api_url = "http://localhost:6969";
+
+// Gets all users
+async function getapi(url) {
+    // Storing response 
+    const response = await fetch(url + "/" + "users");
+
+    // Storing data in form of JSON 
+    var data = await response.json();
+    // if (response) {
+    //     hideloader();
+    // }
+    show(data);  
+}
+
+// Display table
+function show(data) {
+    let table = `<tr>
+        <th>User_id</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>Password</th>
+        <th>Billing Address</th>
+        <th>Default Shipping Address</th>
+        <th>Country</th>
+        <th>User Type</th>
+        <th>View</th>
+        </tr>`;
+
+    // Loop to access all rows 
+    for (let user of data) {
+        table += `
+        <tr>
+            <td>${user.user_id}</td>
+            <td>user.full_name</td>
+            <td>user.email</td>
+            <td>user.phone</td>
+            <td>user.password</td>
+            <td>user.billing_address</td>
+            <td>user.default_shipping_address</td>
+            <td>user.country</td>
+            <td>user.user_type</td>
+            <td><button onclick="getSinlgeUser(${user.user_id})">Get</button></td>
+            </tr>
+        `;
+        // Setting innerHTML as table variable 
+    }
+    
+    document.getElementById("users").innerHTML = table;
+    // Calling that async function 
+}
+
+
+function getSinlgeUser(user_id){
+   fetch(`http://localhost:6969/users/users/${user_id}`).then((res) => res.json()).then((data) => {
+    console.log(data[0])
+    // Token
+    window.localStorage.setItem('singleUser', JSON.stringify(data[0]))
+   })
+}
+getapi(api_url);
+
+
+</script>
